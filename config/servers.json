@@ -1,0 +1,51 @@
+{
+	"development": {
+		"gate": [
+			{"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 8686, "frontend": true, "args": " --inspect=0.0.0.0:18686"}
+		],
+		"connector": [
+			{"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientHost": "127.0.0.1", "clientPort": 8687, "frontend": true, "args": " --inspect=0.0.0.0:13150"},
+			{"id": "connector-server-2", "host": "127.0.0.1", "port": 3250, "clientHost": "127.0.0.1", "clientPort": 8688, "frontend": true, "args": " --inspect=0.0.0.0:13250"}
+		],
+		"auth": [
+			{"id": "auth-server-1", "host": "127.0.0.1", "port": 4150, "args": " --inspect=0.0.0.0:14150"}
+		],
+		"club": [
+			{"id": "club-server-1", "host": "127.0.0.1", "port": 5150, "args": " --inspect=0.0.0.0:15150"},
+			{"id": "club-server-2", "host": "127.0.0.1", "port": 5250, "args": " --inspect=0.0.0.0:15250"}
+		],
+		"record": [
+			{"id": "record-server-1", "host": "127.0.0.1", "port": 6150, "args": " --inspect=0.0.0.0:16150"}
+		],
+		"table": [
+			{"id": "table-15-1", "host": "127.0.0.1", "port": 7150, "args": " --inspect=0.0.0.0:17150"},
+			{"id": "table-25-1", "host": "127.0.0.1", "port": 7250, "args": " --inspect=0.0.0.0:17250"},
+			{"id": "table-35-1", "host": "127.0.0.1", "port": 7350, "args": " --inspect=0.0.0.0:17350"}
+		]
+	},
+
+	"production": {
+		"gate": [
+			{"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 8686, "frontend": true}
+		],
+		"connector": [
+			{"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientHost": "111.229.200.111", "clientPort": 8687, "frontend": true},
+			{"id": "connector-server-2", "host": "127.0.0.1", "port": 3250, "clientHost": "111.229.200.111", "clientPort": 8688, "frontend": true}
+		],
+		"auth": [
+			{"id": "auth-server-1", "host": "127.0.0.1", "port": 4150}
+		],
+		"club": [
+			{"id": "club-server-1", "host": "127.0.0.1", "port": 5150},
+			{"id": "club-server-2", "host": "127.0.0.1", "port": 5250}
+		],
+		"record": [
+			{"id": "record-server-1", "host": "127.0.0.1", "port": 6150}
+		],
+		"table": [
+			{"id": "table-15-1", "host": "127.0.0.1", "port": 7150},
+			{"id": "table-25-1", "host": "127.0.0.1", "port": 7250},
+			{"id": "table-35-1", "host": "127.0.0.1", "port": 7350}
+		]
+	}
+}

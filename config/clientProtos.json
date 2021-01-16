@@ -1,0 +1,60 @@
+{
+	"gate.gateHandler.queryEntry": {
+		"required string code": 1
+	},
+
+	"connector.entryHandler.enter": {
+		"required string code": 1,
+		"message UserInfo": {
+			"required string name": 1,
+			"required string avatarUrl": 2,
+			"required uInt32 gender": 3
+		},
+		"optional UserInfo userInfo": 2,
+		"required string platform": 3
+	},
+
+	"connector.clubHandler.enterClub": {
+		"required uInt32 clubId": 1
+	},
+
+	"connector.clubHandler.createClub": {
+		"required string clubName": 1
+	},
+
+	"connector.clubHandler.joinClub": {
+		"required uInt32 clubId": 1
+	},
+
+	"connector.clubHandler.getClubCheckList": {
+		"required uInt32 clubId": 1
+	},
+
+	"connector.clubHandler.setClubCheckResult": {
+		"required uInt32 clubId": 1,
+		"required uInt32 targetId": 2,
+		"required bool isAgree": 3
+	},
+
+	"connector.clubHandler.getClubTable": {
+		"required uInt32 clubId": 1,
+		"required uInt32 gameMode": 2,
+		"required uInt32 gameId": 3,
+		"required string playwayId": 4
+	},
+
+	"table.tableHandler.readyGame": {
+	},
+
+	"table.tableHandler.playCard": {
+		"repeated uInt32 bCardData": 1,
+		"required uInt32 bCardCount": 2
+	},
+
+	"table.tableHandler.leaveRoom": {
+	},
+
+	"table.tableHandler.dissolveGame": {
+		"required uInt32 dissolveType": 1
+	}
+}

@@ -1,0 +1,105 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "gate",
+			"address": "127.0.0.1",
+			"port": 18686,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "connector-server-1",
+			"address": "127.0.0.1",
+			"port": 13150,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "connector-server-2",
+			"address": "127.0.0.1",
+			"port": 13250,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "auth",
+			"address": "127.0.0.1",
+			"port": 14150,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "club-server-1",
+			"address": "127.0.0.1",
+			"port": 15150,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "club-server-2",
+			"address": "127.0.0.1",
+			"port": 15250,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "record",
+			"address": "127.0.0.1",
+			"port": 16150,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "table-15-1",
+			"address": "127.0.0.1",
+			"port": 17150,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "table-25-1",
+			"address": "127.0.0.1",
+			"port": 17250,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "table-35-1",
+			"address": "127.0.0.1",
+			"port": 17350,
+			"localRoot": "", // "${workspaceFolder}",
+			//"remoteRoot": "/home/cfyx/cfyx-server"
+		},
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "localDebug",
+            "program": "${workspaceFolder}/app.js"
+        }
+    ]
+}

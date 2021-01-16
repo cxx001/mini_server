@@ -1,0 +1,13 @@
+[
+	"onJoinClubResult",
+	"onRemoveClubTable",
+	"onReadyGame",
+	"onWarnUser",
+	"onOutCard",
+	"onOutCardNotify",
+	"onPassCard",
+	"onSettlement",
+	"onLeaveRoom",
+	"onDissolveRoom",
+	"onStartGame"
+]
