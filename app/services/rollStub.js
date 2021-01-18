@@ -73,32 +73,6 @@ pro.getUid2Sid = function (uid, cb) {
     cb(sid);
 }
 
-pro.recordGameInfo = function (uid, gameInfo, cb) {
-	logger.info("记录游戏服信息:", gameInfo);
-	this.gameInfo[uid] = gameInfo;
-	utils.invokeCallback(cb);
-};
-
-pro.removeGameInfo = function (uid, cb) {
-	logger.info("移除游戏服信息:", uid)
-	delete this.gameInfo[uid];
-	utils.invokeCallback(cb);
-}
-
-pro.getGameInfo = function (uid, cb) {
-    let gameInfo = this.gameInfo[uid];
-    logger.info("角色[%d]游戏服信息:", uid, gameInfo)
-	if (gameInfo) {
-		let msg = {
-			code: consts.GameStatus.GAME_PLAYING,
-			gameInfo: gameInfo
-		}
-		utils.invokeCallback(cb, msg);
-	} else {
-		utils.invokeCallback(cb, {code: consts.GameStatus.GAME_FREE});
-	}
-};
-
 pro.callOnlineAvtsMethod = function (uids, funcName, ...args) {
     let cb = args[args.length - 1];
     let params = args.slice(0, args.length - 1);

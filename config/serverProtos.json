@@ -1,34 +1,5 @@
 {
-	"onRemoveClubTable": {
-		"required uInt32 clubId": 1,
-		"required uInt32 tableId": 2
-	},
-
 	"onReadyGame": {
-		"required uInt32 wChairID": 1
-	},
-
-	"onWarnUser": {
-		"required uInt32 wWarnUser": 1
-	},
-
-	"onOutCard": {
-		"required uInt32 outcardUser": 1,
-		"repeated uInt32 cardData": 2,
-		"required uInt32 cardCount": 3,
-		"required sInt32 currentUser": 4
-	},
-
-	"onOutCardNotify": {
-		"required uInt32 currentUser": 1
-	},
-
-	"onPassCard": {
-		"required uInt32 wPassUser": 1,
-		"required uInt32 wCurrentUser": 2
-	},
-
-	"onLeaveRoom": {
 		"required uInt32 wChairID": 1
 	}
 }

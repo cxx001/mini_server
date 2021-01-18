@@ -10,17 +10,5 @@
 	{
         "type": "auth",
         "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
-	},
-	{
-		"type": "club",
-		"token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxn201908141105"
-	},
-	{
-		"type": "record",
-		"token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxn201911062022"
-	},
-	{
-        "type": "table",
-        "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
 	}
 ]

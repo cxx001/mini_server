@@ -11,9 +11,6 @@ var consts = {
 	APP_SECRET: "c669048af98c0236b5fc26364a261b15",
 	
 	ENABLE_GM: true,  // 是否开启GM命令
-
-	ReplayMaxNum: 100, // 回放最大存储条数
-	AutoDissolveTime: 60,  //自动解散时间
 };
 
 for (var f in uconsts) {
