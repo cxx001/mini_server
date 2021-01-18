@@ -5,11 +5,9 @@
  */
 'use strict';
 var Avatar = require("./avatar")
-var Table = require("./table");
 
 var entityClasses = {
 	Avatar: Avatar,
-    Table: Table,
 }
 
 var entityFactory = module.exports;

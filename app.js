@@ -6,12 +6,8 @@ let fs = require('fs'), path = require('path');
 let mongodb = require("./app/mongodb/mongodb");
 let entityFactory = require('./app/entity/entityFactory');
 let avatarFilter = require('./app/servers/connector/filter/avatarFilter');
-let tableFilter = require('./app/servers/table/filter/tableFilter');
 let routeUtil = require('./app/util/routeUtil');
-
 let RollStub = require('./app/services/rollStub');
-let ClubStub = require('./app/services/clubStub');
-let RecordStub = require('./app/services/recordStub');
 
 /**
  * Init app for client.
@@ -80,7 +76,7 @@ app.configure('production|development', function () {
     }
 	
 	initDB(app);
-	app.route('table', routeUtil.table);
+	//app.route('table', routeUtil.table);
 	
     // message缓冲
 	app.set('pushSchedulerConfig', {scheduler: pomelo.pushSchedulers.buffer, flushInterval: 20});
@@ -114,42 +110,6 @@ app.configure('production|development', function () {
 
 app.configure('production|development', 'auth', function () {
     app.set('rollStub', RollStub(app));
-});
-
-app.configure('production|development', 'club', function () {
-	app.set('clubStub', new ClubStub(app), true);
-});
-
-app.configure('production|development', 'record', function () {
-	app.set('recordStub', new RecordStub(app), true);
-});
-
-app.configure('production|development', 'table', function () {
-	app.filter(pomelo.filters.serial());   // 对用户请求做串行化
-	app.before(tableFilter());
-
-	// 创建空桌子(暂时约定:每种游戏上限9999, 每个服务器上限999, 限开10台负载)
-	let gameId = Number(app.get('serverId').split("-")[1]);
-	let gameIdx = Number(app.get('serverId').split("-")[2]);
-	logger.info('game server table init. gameId: %d, gameIdx: %d', gameId, gameIdx);
-	if (!(gameIdx > 0 && gameIdx < 10)) {
-		logger.error('gameServer is config error.');
-		return;
-	}
-
-	let tableId = null;
-	let tableList = new Set();
-	let tableCount = 999;
-	let stepVal = (gameIdx - 1) * (tableCount + 1);
-	for (let i = 1; i <= tableCount; i++) {
-		tableId = gameId*10000 + i + stepVal;
-		entityFactory.createEntity("Table", tableId, {
-			components: ['game' + gameId]
-		});
-		tableList.add(tableId);
-	}
-	app.set('tableList', tableList, true);
-	app.set('tableCount', tableCount, true);
 });
 
 // start app
