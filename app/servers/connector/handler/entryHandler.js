@@ -95,7 +95,7 @@ var doLogin = function (app, session, next, openid, session_key, userInfo) {
         } else {
             uuid = docs[0]["_id"];
         }
-        app.rpc.auth.authRemote.checkin(null, openid, uuid, app.get('serverId'),
+        app.rpc.authGlobal.authRemote.checkin(null, openid, uuid, app.get('serverId'),
 			function (result, formerSid, formerUid) {
 			// 已经登录，走顶号流程
 			if (result == consts.CheckInResult.ALREADY_ONLINE) {
@@ -183,7 +183,7 @@ var readyLogin = function (app, session, uuid, openid, session_key, userInfo, ne
             info: avatar.clientLoginInfo()
         });
         if (bRelay) {
-            app.rpc.auth.authRemote.relayCheckin(null, openid, uuid, app.get('serverId'), null);
+            app.rpc.authGlobal.authRemote.relayCheckin(null, openid, uuid, app.get('serverId'), null);
         }
     })
 };

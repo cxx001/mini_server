@@ -108,7 +108,7 @@ app.configure('production|development', function () {
 	});
 });
 
-app.configure('production|development', 'auth', function () {
+app.configure('production|development', 'authGlobal', function () {
     app.set('rollStub', RollStub(app));
 });
 

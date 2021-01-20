@@ -168,7 +168,7 @@ pro._getTableSidByTableId = function (tableId) {
 
 pro._IsCheckGameing = function (uid) {
     return new Promise(function (resolve, reject) {
-		pomelo.app.rpc.auth.authRemote.getGameInfo(null, uid, (resp) => {
+		pomelo.app.rpc.authGlobal.authRemote.getGameInfo(null, uid, (resp) => {
 			resolve(resp);
 		})
     })
