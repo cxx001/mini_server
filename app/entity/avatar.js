@@ -16,7 +16,7 @@ var AUTO_SAVE_TICK = 1000 * 60 * 5  // 自动存盘时间
 var Avatar = function (opts) {
     opts = opts || {};
     // avatar组件
-    opts.components = ['avatarProp', 'lobby', 'club'];
+    opts.components = ['avatarProp', 'lobby', 'gm'];
     Entity.call(this, opts);
 
     this.logoutTimer = null;
@@ -40,6 +40,16 @@ let pro = Avatar.prototype;
 
 pro.initDBModel = function () {
     this.db = pomelo.app.db.getModel("Avatar");
+};
+
+pro.updateUserInfo = function (userInfo, bLogin) {
+    this.name = userInfo.name;
+    this.avatarUrl = userInfo.avatarUrl;
+    this.gender = userInfo.gender
+
+    if (bLogin) {
+        this.emit("EventLogin", this);
+    }
 };
 
 // 存盘信息更新
@@ -69,48 +79,6 @@ pro.save = function (cb) {
     });
 };
 
-pro.updateUserInfo = function (userInfo) {
-    this.name = userInfo.name;
-    this.avatarUrl = userInfo.avatarUrl;
-    this.gender = userInfo.gender
-};
-
-pro.addUserClubList = function (clubId) {
-    this.clubList = this.clubList || [];
-    for (let i = 0; i < this.clubList.length; i++) {
-        const element = this.clubList[i];
-        if (element == clubId) {
-            this.logger.warn('add2clubList clubId[%d] exist.', clubId);
-            return;
-        }
-    }
-    this.clubList.push(clubId);
-};
-
-pro.removeUserClubList = function (clubId) {
-    for (const key in this.clubList || []) {
-        const element = this.clubList[key];
-        if (element == clubId) {
-            this.clubList.splice(key, 1);
-            break;
-        }
-    }
-};
-
-pro.updateGameCount = function (isWiner) {
-	this.gameCount = this.gameCount + 1;
-	if (isWiner) {
-		this.winCount = this.winCount + 1;
-	} else {
-		this.failCount = this.failCount + 1;
-	}
-};
-
-pro.updateRoomCardNum = function (subNum) {
-    this.roomCardNum = this.roomCardNum + subNum;
-    this.logger.info('修改房卡数量 subNum=', subNum);
-};
-
 // 登录时发给客户端
 pro.clientLoginInfo = function () {
     let api = new TLSSigAPIv2.Api(1400340058, "dba148fcf28eda660b95a805f8492565be9f371ecbab34db45efd52a3cdf2aec");
@@ -127,23 +95,7 @@ pro.clientLoginInfo = function () {
 		gameCount: this.gameCount,
 		winCount: this.winCount,
 		failCount: this.failCount,
-		announcement: '牌友联盟是一款亲朋好友间的休闲娱乐手机游戏，严禁赌博，一经发现立即冻结处理!',
 		userSig: sig,
-	}
-};
-
-pro.getUserInfo = function () {
-    return  {
-        sid: this.serverId,
-        openid: this.openid,
-		uid: this.id,
-		name: this.name,
-		gender: this.gender,
-		avatarUrl: this.avatarUrl,
-        roomCardNum: this.roomCardNum,
-		gameCount: this.gameCount,
-		winCount: this.winCount,
-		failCount: this.failCount,
 	}
 };
 

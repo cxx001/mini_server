@@ -72,7 +72,7 @@ var doWxLogin = function (app, session, next, code, userInfo) {
                 avatarUrl: data["avatarUrl"],
                 gender: data["gender"]
             }
-            console.log("xxxxxxxxxaa", openid, session_key, userInfo)
+            console.log("wixin_info:", openid, session_key, userInfo)
             doLogin(app, session, next, openid, session_key, userInfo);
         }
     ).catch(function (error) {
@@ -87,84 +87,71 @@ var doLogin = function (app, session, next, openid, session_key, userInfo) {
             logger.error("db find avatar error" + err);
             next(null, {code: consts.Login.FAIL});
             return;
-        }
-        
+		}
+		
+		let uuid = null;
         if (docs.length == 0) {
-            genUserId(function (err, uid) {
-				if (err) {
-            		next(null, {code: consts.Login.FAIL});
+            uuid = app.db.genId();
+        } else {
+            uuid = docs[0]["_id"];
+        }
+        app.rpc.auth.authRemote.checkin(null, openid, uuid, app.get('serverId'),
+			function (result, formerSid, formerUid) {
+			// 已经登录，走顶号流程
+			if (result == consts.CheckInResult.ALREADY_ONLINE) {
+				if (formerUid !== uuid) {
+					// 事件大了！！！
+					logger.error("same account with different uuid, openid[%s] formerUid[%s] newUid[%s]", openid, formerUid, uuid);
+					next(null, {code: consts.Login.FAIL});
 					return;
 				}
-				checkinLogin(app, session, next, openid, session_key, userInfo, uid);
-			});
-        } else {
-			let uid = docs[0]["_id"];
-			checkinLogin(app, session, next, openid, session_key, userInfo, uid);
-        }
-    });
-};
-
-var checkinLogin = function (app, session, next, openid, session_key, userInfo, uid) {
-	app.rpc.auth.authRemote.checkin(null, openid, uid, app.get('serverId'),
-		function (result, formerSid, formerUid) {
-		// 已经登录，走顶号流程
-		if (result == consts.CheckInResult.ALREADY_ONLINE) {
-			if (formerUid !== uid) {
-				// 事件大了！！！
-				logger.error("same account with different uid, openid[%s] formerUid[%s] newUid[%s]", openid, formerUid, uid);
-				next(null, {code: consts.Login.FAIL});
-				return;
-			}
-			if (formerSid == app.get('serverId')) {
-				var avatar = entityManager.getEntity(formerUid);
-				if (!avatar) {
-					readyLogin(app, session, uid, openid, session_key, userInfo, next, false);
-				}
-				else {
-					// 刷新session_key和userInfo
-					avatar.session_key = session_key;
-					avatar.updateUserInfo(userInfo);
-					avatar.reconnect();  // 重连上了
-					app.get('sessionService').kick(formerUid, "relay");
-					session.bind(avatar.id);
-					session.on('closed', onAvatarLeave.bind(null, app));
-					// 重新设置session setting
-					avatar.importSessionSetting();
-					avatar.emit("EventReconnect", avatar);  //通知服务器内部监听重连消息
-					pomelo.app.rpc.auth.authRemote.getGameInfo(null, avatar.id, function (gameInfo) {
-						let clientData = avatar.clientLoginInfo();
-						clientData.gameInfo = gameInfo;
+				if (formerSid == app.get('serverId')) {
+					var avatar = entityManager.getEntity(formerUid);
+					if (!avatar) {
+						readyLogin(app, session, uuid, openid, session_key, userInfo, next, false);
+					}
+					else {
+						// 刷新session_key和userInfo
+						avatar.session_key = session_key;
+						avatar.updateUserInfo(userInfo);
+						avatar.reconnect();  // 重连上了
+						app.get('sessionService').kick(formerUid, "relay");
+						session.bind(avatar.id);
+						session.on('closed', onAvatarLeave.bind(null, app));
+						// 重新设置session setting
+						avatar.importSessionSetting();
 						next(null, {
 							code: consts.Login.OK,
-							info: clientData
+							info: avatar.clientLoginInfo()
 						});
+						avatar.emit("EventReconnect", avatar);
+					}
+				}
+				else {
+					// 不在同一个进程，告诉客户端重连
+					var conector = null;
+					var connectors = app.getServersByType('connector');
+					for (var i in connectors) {
+						if (connectors[i].id === formerSid)
+							conector = connectors[i];
+					}
+					next(null, {
+						code: consts.Login.RELAY,
+						host: conector.clientHost,
+						port: conector.clientPort
 					});
 				}
 			}
 			else {
-				// 不在同一个进程，告诉客户端重连
-				var conector = null;
-				var connectors = app.getServersByType('connector');
-				for (var i in connectors) {
-					if (connectors[i].id === formerSid)
-						conector = connectors[i];
-				}
-				next(null, {
-					code: consts.Login.RELAY,
-					host: conector.clientHost,
-					port: conector.clientPort
-				});
+				readyLogin(app, session, uuid, openid, session_key, userInfo, next, false);
 			}
-		}
-		else {
-			readyLogin(app, session, uid, openid, session_key, userInfo, next, false);
-		}
-	});
-}
+		});
+    });
+};
 
-var readyLogin = function (app, session, uid, openid, session_key, userInfo, next, bRelay) {
+var readyLogin = function (app, session, uuid, openid, session_key, userInfo, next, bRelay) {
     // 查db
-    app.db.find("Avatar", {"_id": uid}, null, null, function (err, docs) {
+    app.db.find("Avatar", {"_id": uuid}, null, null, function (err, docs) {
         if (err) {
             logger.error("db find avatar error" + err);
             next(null, {code: consts.Login.FAIL});
@@ -172,7 +159,7 @@ var readyLogin = function (app, session, uid, openid, session_key, userInfo, nex
         }
         if (docs.length == 0) {
             // 新建号
-            var avatar = entityFactory.createEntity("Avatar", uid, {
+            var avatar = entityFactory.createEntity("Avatar", uuid, {
                 openid: openid,
 				session_key: session_key,
             })
@@ -186,22 +173,17 @@ var readyLogin = function (app, session, uid, openid, session_key, userInfo, nex
             var avatar = entityFactory.createEntity("Avatar", null, docs[0]);
             logger.info("avatar login success. id: " + avatar.id);
         }
-		avatar.updateUserInfo(userInfo);
-		avatar.emit("EventLogin", avatar);
+		avatar.updateUserInfo(userInfo, true);
         var sessionService = app.get('sessionService');
         sessionService.kick(avatar.id, 'relay');
         session.bind(avatar.id);
 		session.on('closed', onAvatarLeave.bind(null, app));
-		pomelo.app.rpc.auth.authRemote.getGameInfo(null, avatar.id, function (gameInfo) {
-			let clientData = avatar.clientLoginInfo();
-			clientData.gameInfo = gameInfo;
-			next(null, {
-				code: consts.Login.OK,
-				info: clientData
-			});
-		});
+		next(null, {
+            code: consts.Login.OK,
+            info: avatar.clientLoginInfo()
+        });
         if (bRelay) {
-            app.rpc.auth.authRemote.relayCheckin(null, openid, uid, app.get('serverId'), null);
+            app.rpc.auth.authRemote.relayCheckin(null, openid, uuid, app.get('serverId'), null);
         }
     })
 };
@@ -228,30 +210,23 @@ var onAvatarLeave = function (app, session, reason) {
     avatar.disconnect();
 };
 
-var genUserId = function (cb) {
-	let findCount = 0;
-	let generateFunc = function () {
-		findCount = findCount + 1;
-		let tempId = 100000 + lodash.random(1, 900000);
-		pomelo.app.db.find("Avatar", {"_id": tempId}, null, null, function (err, docs) {
-			if (err) {
-				logger.error("Avatar db find uid error" + err);
-				cb(err);
-				return;
-			}
-			if (docs.length == 0) {
-				logger.info('创建角色: [%d]', tempId);
-				cb(null, tempId);
-			} else {
-				logger.info('查找次数: [%d]', findCount);
-				if (findCount > 10) {
-					logger.error('创建角色失败!');
-					cb(new Error('create userid error.'));
-					return;
-				}
-				generateFunc();
-			}
-		});
-	}
-	generateFunc();
+handler.command = function (msg, session) {
+    var avatar = entityManager.getEntity(session.uid);
+    avatar && avatar.gm.handleGMCommand(msg.cmd, msg.params);
+};
+
+handler.exchangeSilver = function (msg, session, next) {
+    session.avatar.avatarProp.exchangeSilver(msg.gold, next);
+};
+
+handler.exchangePower = function (msg, session, next) {
+    session.avatar.avatarProp.exchangePower(msg.gold, next);
+};
+
+handler.bagSell = function (msg, session, next) {
+    session.avatar.bag.bagSell(msg.itemID, msg.cnt, next);
+};
+
+handler.bagUse = function (msg, session, next) {
+    session.avatar.bag.bagUse(msg.itemID, msg.cnt, next);
 };

@@ -1,6 +1,6 @@
 {
 	"gate.gateHandler.queryEntry": {
-		"required string code": 1
+		"required uInt32 gameId": 1
 	},
 
 	"connector.entryHandler.enter": {

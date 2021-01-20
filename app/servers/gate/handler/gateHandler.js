@@ -1,6 +1,6 @@
 'use strict';
-var dispatcher = require('../../../util/dispatcher');
 var consts = require('../../../common/consts');
+var _ = require('lodash');
 
 module.exports = function (app) {
     return new Handler(app);
@@ -25,29 +25,35 @@ handler.queryEntry = function (msg, session, next) {
     if (!this.app.get('canLogin')) {
         next(null, {code: consts.Login.MAINTAIN});
         return;
-	}
-	
-    // 微信login获取的code
-	var code = msg.code;
-    if (!code || code == "undefined") {
-        // var ObjectId = require('mongoose').Types.ObjectId;
-		// code = ObjectId();
-		
-		next(null, {code: consts.Code.FAIL});
-        return;
     }
-
-	// get all connectors
-    var connectors = this.app.getServersByType('connector');
+    
+    // get all connectors
+    let connectors = this.app.getServersByType('connector');
     if (!connectors || connectors.length === 0) {
         next(null, {
             code: consts.Login.FAIL
         });
         return;
 	}
+	
+    let servers = [];
+    let gameId = msg.gameId;
+	for (let i = 0; i < connectors.length; i++) {
+		const server = connectors[i];
+		let id = Number(server.id.split("-")[1]);
+		if (id == gameId) {
+			servers.push(server);
+		}
+	}
 
-    // TODO: 大体是均衡分配，不是绝对的
-	var res = dispatcher.dispatch(code, connectors);
+	if (servers.length === 0) {
+        next(null, {
+            code: consts.Login.FAIL
+        });
+        return;
+    }
+    
+    let res = _.sample(servers);
 	next(null, {
 		code: consts.Login.OK,
 		host: res.clientHost,

@@ -5,11 +5,15 @@
  */
 'use strict';
 let LoggerComponent = require('./entityComponent/loggerComponent');
+let GMComponent = _require('./entityComponent/gmComponent');
+
 let AvatarPropertyCtrl = require('./avatarComponent/avatarPropertyCtrl');
 let LobbyComponent = require('./avatarComponent/lobbyComponent');
 
 var componentClass = {
 	logger: LoggerComponent,
+	gm: GMComponent,
+	
 	avatarProp: AvatarPropertyCtrl,
 	lobby: LobbyComponent,
 };
