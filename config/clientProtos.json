@@ -3,7 +3,7 @@
 		"required uInt32 gameId": 1
 	},
 
-	"connector.entryHandler.enter": {
+	"game1.entryHandler.enter": {
 		"required string code": 1,
 		"message UserInfo": {
 			"required string name": 1,

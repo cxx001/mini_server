@@ -26,33 +26,17 @@ handler.queryEntry = function (msg, session, next) {
         next(null, {code: consts.Login.MAINTAIN});
         return;
     }
-    
-    // get all connectors
-    let connectors = this.app.getServersByType('connector');
-    if (!connectors || connectors.length === 0) {
+
+    let gameId = msg.gameId;
+    let serverName = 'game' + gameId;
+    let servers = this.app.getServersByType(serverName);
+    if (!servers || servers.length === 0) {
         next(null, {
             code: consts.Login.FAIL
         });
         return;
 	}
 	
-    let servers = [];
-    let gameId = msg.gameId;
-	for (let i = 0; i < connectors.length; i++) {
-		const server = connectors[i];
-		let id = Number(server.id.split("-")[1]);
-		if (id == gameId) {
-			servers.push(server);
-		}
-	}
-
-	if (servers.length === 0) {
-        next(null, {
-            code: consts.Login.FAIL
-        });
-        return;
-    }
-    
     let res = _.sample(servers);
 	next(null, {
 		code: consts.Login.OK,

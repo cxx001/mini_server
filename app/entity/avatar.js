@@ -21,6 +21,8 @@ var Avatar = function (opts) {
 
     this.logoutTimer = null;
     this.serverId = pomelo.app.get('serverId');
+    this.gameId = Number(this.serverId.split("-")[1]);
+
 	this.session_key = opts.session_key ? opts.session_key : "";
 	this.createTime = opts.createTime ? opts.createTime : Date.now();
     this.sessionSetting = {}  // session设置
@@ -30,7 +32,7 @@ var Avatar = function (opts) {
         this.save();
     }.bind(this), AUTO_SAVE_TICK);  // 自动存盘
 
-    pomelo.app.rpc.authGlobal.authRemote.checkin(null, this.openid, this.id, pomelo.app.getServerId(), null);
+    pomelo.app.rpc.authGlobal.authRemote.checkin(this.gameId, this.openid, this.id, pomelo.app.getServerId(), null);
 };
 
 util.inherits(Avatar, Entity);
@@ -162,7 +164,7 @@ pro.sendMessage = function (route, msg, flush=false) {
 
 // 通过avatarID，尝试调用对用avatar的方法
 pro.callAvatar = function (avatarID, funcName, ...args) {
-    pomelo.app.rpc.authGlobal.authRemote.callOnlineAvtMethod(null, avatarID, funcName, ...args);
+    pomelo.app.rpc.authGlobal.authRemote.callOnlineAvtMethod(this.gameId, avatarID, funcName, ...args);
 };
 
 // 连接断开
@@ -205,7 +207,7 @@ pro.destroy = function (cb) {
     this.emit("EventLogout", this);
     var self = this;
     self.emit('EventDestory', this);
-    pomelo.app.rpc.authGlobal.authRemote.checkout(null, self.openid, self.uid, null);
+    pomelo.app.rpc.authGlobal.authRemote.checkout(this.gameId, self.openid, self.uid, null);
     // 存盘
     clearInterval(self.dbTimer);
     self.dbTimer = null;

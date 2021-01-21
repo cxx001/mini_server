@@ -16,7 +16,7 @@
 		{
 			"type": "node",
 			"request": "attach",
-			"name": "connector-server-1",
+			"name": "game1-server-1",
 			"address": "127.0.0.1",
 			"port": 13150,
 			"localRoot": "", // "${workspaceFolder}",
@@ -25,7 +25,7 @@
 		{
 			"type": "node",
 			"request": "attach",
-			"name": "connector-server-2",
+			"name": "game1-server-2",
 			"address": "127.0.0.1",
 			"port": 13250,
 			"localRoot": "", // "${workspaceFolder}",
@@ -34,63 +34,9 @@
 		{
 			"type": "node",
 			"request": "attach",
-			"name": "auth",
+			"name": "auth-global-server-1",
 			"address": "127.0.0.1",
 			"port": 14150,
-			"localRoot": "", // "${workspaceFolder}",
-			//"remoteRoot": "/home/cfyx/cfyx-server"
-		},
-		{
-			"type": "node",
-			"request": "attach",
-			"name": "club-server-1",
-			"address": "127.0.0.1",
-			"port": 15150,
-			"localRoot": "", // "${workspaceFolder}",
-			//"remoteRoot": "/home/cfyx/cfyx-server"
-		},
-		{
-			"type": "node",
-			"request": "attach",
-			"name": "club-server-2",
-			"address": "127.0.0.1",
-			"port": 15250,
-			"localRoot": "", // "${workspaceFolder}",
-			//"remoteRoot": "/home/cfyx/cfyx-server"
-		},
-		{
-			"type": "node",
-			"request": "attach",
-			"name": "record",
-			"address": "127.0.0.1",
-			"port": 16150,
-			"localRoot": "", // "${workspaceFolder}",
-			//"remoteRoot": "/home/cfyx/cfyx-server"
-		},
-		{
-			"type": "node",
-			"request": "attach",
-			"name": "table-15-1",
-			"address": "127.0.0.1",
-			"port": 17150,
-			"localRoot": "", // "${workspaceFolder}",
-			//"remoteRoot": "/home/cfyx/cfyx-server"
-		},
-		{
-			"type": "node",
-			"request": "attach",
-			"name": "table-25-1",
-			"address": "127.0.0.1",
-			"port": 17250,
-			"localRoot": "", // "${workspaceFolder}",
-			//"remoteRoot": "/home/cfyx/cfyx-server"
-		},
-		{
-			"type": "node",
-			"request": "attach",
-			"name": "table-35-1",
-			"address": "127.0.0.1",
-			"port": 17350,
 			"localRoot": "", // "${workspaceFolder}",
 			//"remoteRoot": "/home/cfyx/cfyx-server"
 		},

@@ -5,9 +5,10 @@ let logger = require('pomelo-logger').getLogger('game', __filename);
 let fs = require('fs'), path = require('path');
 let mongodb = require("./app/mongodb/mongodb");
 let entityFactory = require('./app/entity/entityFactory');
-let avatarFilter = require('./app/servers/connector/filter/avatarFilter');
 let routeUtil = require('./app/util/routeUtil');
 let RollStub = require('./app/services/rollStub');
+
+let avatarFilter1 = require('./app/servers/game1/filter/avatarFilter');
 
 /**
  * Init app for client.
@@ -41,9 +42,9 @@ app.configure('production|development', 'gate', function () {
         });
 });
 
-app.configure('production|development', 'connector', function () {
+app.configure('production|development', 'game1', function () {
     app.set('canLogin', true);
-    app.before(avatarFilter());
+    app.before(avatarFilter1());
     let curFilePath = path.resolve(__dirname);
     app.set('connectorConfig',
     {
@@ -76,7 +77,7 @@ app.configure('production|development', function () {
     }
 	
 	initDB(app);
-	//app.route('table', routeUtil.table);
+	app.route('authGlobal', routeUtil.auth);
 	
     // message缓冲
 	app.set('pushSchedulerConfig', {scheduler: pomelo.pushSchedulers.buffer, flushInterval: 20});

@@ -4,11 +4,11 @@
         "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4890"
 	},
 	{
-		"type": "connector",
-		"token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
-	},
-	{
         "type": "authGlobal",
         "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
+	},
+	{
+		"type": "game1",
+		"token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
 	}
 ]
