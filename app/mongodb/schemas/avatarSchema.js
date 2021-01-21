@@ -7,14 +7,8 @@ var AvatarSchema = new Schema({
     name: String,
     gender: Number,
     avatarUrl: String,
-	roomCardNum: Number,
 	createTime: Number,
 	lastOfflineTime: Number,
-	gameCount: Number,
-	winCount: Number,
-	failCount: Number,
-	clubList: [],
-	replayList: [],
 });
 
 AvatarSchema.set('toObject', { getters: true });

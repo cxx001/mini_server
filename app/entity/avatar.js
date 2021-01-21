@@ -91,12 +91,8 @@ pro.clientLoginInfo = function () {
 		name: this.name,
 		gender: this.gender,
 		avatarUrl: this.avatarUrl,
-        roomCardNum: this.roomCardNum,
 		createTime: this.createTime,
 		lastOfflineTime: this.lastOfflineTime,
-		gameCount: this.gameCount,
-		winCount: this.winCount,
-		failCount: this.failCount,
 		userSig: sig,
 	}
 };
