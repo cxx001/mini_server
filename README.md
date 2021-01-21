@@ -36,14 +36,6 @@ nohup xxx & (注意不能直接关闭shell窗口,要先exit命令退出)
 nohup xxx >/dev/null 2>log &  只输出错误信息到日志文件 
 nohup xxx >/dev/null 2>&1 &  什么信息也不要
 
-4.端口被占用操作
-Linux:
-1、进程详情: ps -aux --sort -pmem | less 按照内存从大到小(或者-pcpu)
-2、kill -9 pid
-
-Windows: 
-打开任务管理器,杀掉node.exe的进程
-
 #【问题集】
 1.linux上初次git pull fatal: Not a git repository (or any of the parent directories): .git
 解决：先git init，再pull
