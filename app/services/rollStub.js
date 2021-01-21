@@ -24,7 +24,7 @@ var RollStub = function (app) {
     this.openid2uid = {};
     this.uid2sid = {};
 
-    // if (this.app.serverType !== 'authGlobal') {
+    // if (this.app.serverType !== 'auth') {
     //     setInterval(this.updateOnlineNum.bind(this), 1000 * 60 * 5);
     //     this.updateOnlineNum();
     // }

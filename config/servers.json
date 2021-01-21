@@ -3,12 +3,12 @@
 		"gate": [
 			{"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 8686, "frontend": true, "args": " --inspect=0.0.0.0:18686"}
 		],
+		"auth": [
+			{"id": "auth-server-1", "host": "127.0.0.1", "port": 4150, "args": " --inspect=0.0.0.0:14150"}
+		],
 		"game1": [
 			{"id": "game-1-1", "host": "127.0.0.1", "port": 3150, "clientHost": "127.0.0.1", "clientPort": 8687, "frontend": true, "args": " --inspect=0.0.0.0:13150"},
 			{"id": "game-1-2", "host": "127.0.0.1", "port": 3250, "clientHost": "127.0.0.1", "clientPort": 8688, "frontend": true, "args": " --inspect=0.0.0.0:13250"}
-		],
-		"authGlobal": [
-			{"id": "auth-global-server-1", "host": "127.0.0.1", "port": 4150, "args": " --inspect=0.0.0.0:14150"}
 		]
 	},
 
@@ -16,12 +16,12 @@
 		"gate": [
 			{"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 8686, "frontend": true}
 		],
+		"auth": [
+			{"id": "auth-server-1", "host": "127.0.0.1", "port": 4150}
+		],
 		"game1": [
 			{"id": "game-1-1", "host": "127.0.0.1", "port": 3150, "clientHost": "111.229.200.111", "clientPort": 8687, "frontend": true},
 			{"id": "game-1-2", "host": "127.0.0.1", "port": 3250, "clientHost": "111.229.200.111", "clientPort": 8688, "frontend": true}
-		],
-		"authGlobal": [
-			{"id": "auth-global-server-1", "host": "127.0.0.1", "port": 4150}
 		]
 	}
 }

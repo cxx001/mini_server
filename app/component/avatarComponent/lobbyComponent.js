@@ -88,7 +88,7 @@ pro.getRankList = function (rankType, pageIdx, pageNum, next) {
 
 pro._IsCheckGameing = function (uid) {
     return new Promise(function (resolve, reject) {
-		pomelo.app.rpc.authGlobal.authRemote.getGameInfo(1, uid, (resp) => {
+		pomelo.app.rpc.auth.authRemote.getGameInfo(1, uid, (resp) => {
 			resolve(resp);
 		})
     })

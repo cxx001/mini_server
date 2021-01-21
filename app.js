@@ -77,7 +77,7 @@ app.configure('production|development', function () {
     }
 	
 	initDB(app);
-	app.route('authGlobal', routeUtil.auth);
+	app.route('auth', routeUtil.auth);
 	
     // message缓冲
 	app.set('pushSchedulerConfig', {scheduler: pomelo.pushSchedulers.buffer, flushInterval: 20});
@@ -109,7 +109,7 @@ app.configure('production|development', function () {
 	});
 });
 
-app.configure('production|development', 'authGlobal', function () {
+app.configure('production|development', 'auth', function () {
     app.set('rollStub', RollStub(app));
 });
 
